@@ -166,7 +166,7 @@ def parse_int_list(s):
 @click.option('--S_max', 'S_max',          help='Stoch. max noise level', metavar='FLOAT',                          type=click.FloatRange(min=0), default='inf', show_default=True)
 @click.option('--S_noise', 'S_noise',      help='Stoch. noise inflation', metavar='FLOAT',                          type=float, default=1, show_default=True)
 @click.option('--cfg_scale', 'cfg_scale',  help='Cfg scale parameter', metavar='FLOAT',                             type=float, default=1.0, show_default=True)
-@click.option('--return_stage_idx', 'return_stage_idx',  help='Returning stage index', metavar='INT',               type=int, default=-1, show_default=True)
+@click.option('--skip_bricks', 'skip_bricks',  help='Returning stage index', metavar='INT',                         type=bool, default=False, show_default=True)
 @click.option("--fc", 'use_full_channels', help="use full channels in cfg sampling", metavar='BOOL',                type=bool, default=True, show_default=True)
 @click.option('--height_ratio', 'height_ratio',      help='Number of sampling steps', metavar='INT',                          type=click.FloatRange(min=1.0), default=1.0, show_default=True)
 @click.option('--width_ratio', 'width_ratio',      help='Number of sampling steps', metavar='INT',                          type=click.FloatRange(min=1.0), default=1.0, show_default=True)
@@ -174,7 +174,7 @@ def parse_int_list(s):
 @click.option('--vae', 'use_vae',         help='whether use SD VAE in generation', metavar='STR',                   type=bool, default=False, show_default=True)
 @click.option('--npz', 'compress_npz',         help='whether use SD VAE in generation', metavar='STR',                   type=bool, default=False, show_default=True)
 
-def main(network_pkl, arch, outdir, subdirs, seeds, class_idx, max_batch_size, cfg_scale, use_full_channels, return_stage_idx, img_resolution, img_channels, label_dim, height_ratio, width_ratio, use_vae, compress_npz, device=torch.device('cuda')):
+def main(network_pkl, arch, outdir, subdirs, seeds, class_idx, max_batch_size, cfg_scale, use_full_channels, skip_bricks, img_resolution, img_channels, label_dim, height_ratio, width_ratio, use_vae, compress_npz, device=torch.device('cuda')):
     """Generate random images using the techniques described in the paper
     "Elucidating the Design Space of Diffusion-Based Generative Models".
 
@@ -239,7 +239,7 @@ def main(network_pkl, arch, outdir, subdirs, seeds, class_idx, max_batch_size, c
         sampler_kwargs = {key: value for key, value in sampler_kwargs.items() if value is not None}
         sampler_fn =  edm_sampler
         with torch.no_grad():
-            images = sampler_fn(net, latents, class_labels, cfg_scale, randn_like=rnd.randn_like, use_full_channels=use_full_channels, return_stage_idx=return_stage_idx, **sampler_kwargs)
+            images = sampler_fn(net, latents, class_labels, cfg_scale, randn_like=rnd.randn_like, use_full_channels=use_full_channels, use_skip=skip_bricks, **sampler_kwargs)
             images = vae.decode((images / 0.18215).float()).sample if use_vae else images
 
         # Save images.
