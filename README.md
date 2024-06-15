@@ -5,6 +5,7 @@
 
 
 **Learning stackable and skippable LEGO bricks for efficient, reconfigurable, and variable-resolution diffusion modeling**
+
 *Huangjie Zheng, Zhendong Wang, Jianbo Yuan, Guanghan Ning, Pengcheng He, Quanzeng You, Hongxia Yang, Mingyuan Zhou*
 
 ![Teaser image](./static/images/teaser.jpg)
