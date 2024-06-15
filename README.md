@@ -86,8 +86,8 @@ Here we provide checkpoints of LEGO-PG, LEGO-PR, and LEGO-U models in our [Huggi
 
 | LEGO Model     | Image Resolution | FID-50K | Inception Score | Model Size | 
 |---------------|------------------|---------|-----------------|--------|
-| [LEGO-L-PG](https://huggingface.co/hjzheng/LEGO-Diffusion/resolve/main/LEGO-L-PG-64.pkl) | 64 x 64          | 2.16    | 338.08          | 0.4B    |
-| [LEGO-L-PR](https://huggingface.co/hjzheng/LEGO-Diffusion/resolve/main/LEGO-L-PR-64.pkl) | 64 x 64          | 2.29    | 338.08          | 0.4B    |
+| [LEGO-L-PG](https://huggingface.co/hjzheng/LEGO-Diffusion/resolve/main/LEGO-L-PG-64.pkl) | 64 x 64          | 2.16    | 78.66          | 0.4B    |
+| [LEGO-L-PR](https://huggingface.co/hjzheng/LEGO-Diffusion/resolve/main/LEGO-L-PR-64.pkl) | 64 x 64          | 2.29    | 78.66          | 0.4B    |
 | [LEGO-XL-U](https://huggingface.co/hjzheng/LEGO-Diffusion/resolve/main/LEGO-XL-U-256.pkl) | 256 x 256          | 2.59    | 338.08          | 1.2B    |
 
 ### BibTex
