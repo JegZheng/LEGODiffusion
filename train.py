@@ -67,10 +67,10 @@ def find_latest_checkpoint(directory):
 @click.option('--data',          help='Path to the dataset', metavar='ZIP|DIR',                     type=str, required=True)
 @click.option('--cond',          help='Train class-conditional model', metavar='BOOL',              type=bool, default=False, show_default=True)
 @click.option('--joint',         help='Train patch model together', metavar='BOOL',                 type=bool, default=True, show_default=True)
-@click.option('--arch',          help='Network architecture', metavar='luga_v1',          type=click.Choice(['lego_S_PG_64', 'lego_S_PR_64',  
-                                                                                                            'lego_L_PG_32', 'lego_L_PR_32', 'lego_L_PG_64', 'lego_L_PR_64',
+@click.option('--arch',          help='Network architecture', metavar='luga_v1',          type=click.Choice(['lego_S_PG_64', 'lego_S_PR_64', 'lego_S_U_32', 'lego_S_U_64',
+                                                                                                            'lego_L_PG_32', 'lego_L_PR_32', 'lego_L_PG_64', 'lego_L_PR_64', 
                                                                                                             'lego_XL_PG_32', 'lego_XL_PR_32', 'lego_XL_PG_64', 'lego_XL_PR_64', 
-                                                                                                            'lego_XL_U_32', 'lego_XL_U_64']), 
+                                                                                                            'lego_L_U_32', 'lego_L_U_64', 'lego_XL_U_32', 'lego_XL_U_64']), 
                                                                                                             default='lego_S_PG_32', show_default=True)
 @click.option('--precond',       help='Preconditioning & loss function', metavar='edm',       type=click.Choice(['edm']), default='edm', show_default=True)
 

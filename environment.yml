@@ -1,0 +1,22 @@
+name: LEGO
+channels:
+  - pytorch
+  - nvidia
+dependencies:
+  - python >= 3.8
+  - pytorch >= 2.0
+  - torchvision
+  - pytorch-cuda=11.8
+  - click>=8.0
+  - pillow>=8.3.1
+  - scipy>=1.7.1
+  - psutil
+  - requests
+  - tqdm
+  - imageio
+  - pip:
+    - timm
+    - imageio-ffmpeg>=0.4.3
+    - pyspng 
+    - diffusers
+    - accelerate

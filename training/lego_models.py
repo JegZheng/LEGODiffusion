@@ -488,6 +488,12 @@ def lego_S_PG_64(**kwargs):
 def lego_S_PR_64(**kwargs):
     return LEGO(img_resolution=[64, 16, 4], model_type=['lego_S_2', 'lego_S_8', 'lego_S_2'], depths=[6, 4, 2], **kwargs)
 
+def lego_S_U_32(**kwargs):
+    return LEGO(img_resolution=[32, 16, 4, 16, 32], model_type=['lego_S_2', 'lego_S_8', 'lego_S_2', 'lego_S_8', 'lego_S_2'], depths=[6, 4, 2, 4, 6], **kwargs)
+
+def lego_S_U_64(**kwargs):
+    return LEGO(img_resolution=[64, 16, 4, 16, 64], model_type=['lego_S_2', 'lego_S_8', 'lego_S_2', 'lego_S_8', 'lego_S_2'], depths=[6, 4, 2, 4, 6], **kwargs)
+
 def lego_L_PG_32(**kwargs):
     return LEGO(img_resolution=[4, 16, 32], model_type=['lego_L_2', 'lego_L_8', 'lego_L_2'], depths=[4, 8, 12], **kwargs)
 
@@ -495,10 +501,22 @@ def lego_L_PR_32(**kwargs):
     return LEGO(img_resolution=[32, 16, 4], model_type=['lego_L_2', 'lego_L_8', 'lego_L_2'], depths=[12, 8, 4], **kwargs)
 
 def lego_L_PG_64(**kwargs):
-    return LEGO(img_resolution=[4, 16, 64], model_type=['lego_L_2', 'lego_L_8', 'lego_L_2'], depths=[4, 8, 12], **kwargs)
+    return LEGO(img_resolution=[4, 16, 64], model_type=['lego_L_2', 'lego_L_8', 'lego_L_2'], depths=[6, 8, 12], **kwargs)
 
 def lego_L_PR_64(**kwargs):
-    return LEGO(img_resolution=[64, 16, 4], model_type=['lego_L_2', 'lego_L_8', 'lego_L_2'], depths=[12, 8, 4], **kwargs)
+    return LEGO(img_resolution=[64, 16, 4], model_type=['lego_L_2', 'lego_L_8', 'lego_L_2'], depths=[12, 8, 6], **kwargs)
+
+def lego_L_U_32(**kwargs):
+    return LEGO(img_resolution=[32, 16, 4, 16, 32], model_type=['lego_L_2', 'lego_L_8', 'lego_L_2', 'lego_L_8', 'lego_L_2'], depths=[12, 8, 6, 8, 12], **kwargs)
+
+def lego_L_U_64(**kwargs):
+    return LEGO(img_resolution=[64, 16, 4, 16, 64], model_type=['lego_L_2', 'lego_L_8', 'lego_L_2', 'lego_L_8', 'lego_L_2'], depths=[12, 8, 6, 8, 12], **kwargs)
+
+def lego_L_PG_64_old(**kwargs):
+    return LEGO(img_resolution=[4, 16, 64], model_type=['lego_L_2', 'lego_L_8', 'lego_L_2'], depths=[6, 6, 12], **kwargs)
+
+def lego_L_PR_64_old(**kwargs):
+    return LEGO(img_resolution=[64, 16, 4], model_type=['lego_L_2', 'lego_L_8', 'lego_L_2'], depths=[12, 6, 6], **kwargs)
 
 def lego_XL_PG_32(**kwargs):
     return LEGO(img_resolution=[4, 16, 32], model_type=['lego_XL_2', 'lego_XL_8', 'lego_XL_2'], depths=[4, 12, 14], **kwargs)
@@ -519,8 +537,9 @@ def lego_XL_U_64(**kwargs):
     return LEGO(img_resolution=[64, 16, 4, 16, 64], model_type=['lego_XL_2', 'lego_XL_8', 'lego_XL_2', 'lego_XL_8', 'lego_XL_2'], depths=[14, 12, 4, 12, 14], **kwargs)
 
 lego_models={
-    'lego_S_PG_64': lego_S_PG_64, 'lego_S_PR_64': lego_S_PR_64,  
-    'lego_L_PG_32': lego_L_PG_32, 'lego_L_PR_32': lego_L_PR_32, 'lego_L_PG_64': lego_L_PG_64, 'lego_L_PR_64': lego_L_PR_64,
+    'lego_S_PG_64': lego_S_PG_64, 'lego_S_PR_64': lego_S_PR_64, 'lego_S_U_32': lego_S_U_32, 'lego_S_U_64': lego_S_U_64,
+    'lego_L_PG_32': lego_L_PG_32, 'lego_L_PR_32': lego_L_PR_32, 'lego_L_PG_64': lego_L_PG_64, 'lego_L_PR_64': lego_L_PR_64, 'lego_L_U_32': lego_L_U_32, 'lego_L_U_64': lego_L_U_64,
+    'lego_L_PG_64_old': lego_L_PG_64_old, 'lego_L_PR_64_old': lego_L_PR_64_old, # for pkl loading with previous trained model, we recommend use lego_L_PG_64/lego_L_PR_64 for better performance
     'lego_XL_PG_32': lego_XL_PG_32, 'lego_XL_PR_32': lego_XL_PR_32, 'lego_XL_PG_64': lego_XL_PG_64, 'lego_XL_PR_64': lego_XL_PR_64, 
     'lego_XL_U_32': lego_XL_U_32, 'lego_XL_U_64': lego_XL_U_64, }
 

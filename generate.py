@@ -62,11 +62,10 @@ def compress_to_npz(folder_path, npz_path):
 
 
 #----------------------------------------------------------------------------
-# # EDM sampler (https://arxiv.org/abs/2206.00364).
-
-def edm_sampler(
+# EDM sampler (https://arxiv.org/abs/2206.00364) with option to activate which bricks are used in sampling.
+def edm_lego_sampler(
     net, latents, class_labels=None, cfg_scale=None, randn_like=torch.randn_like,
-    num_steps=18, sigma_min=0.002, sigma_max=80, rho=7,
+    num_steps=18, sigma_min=0.002, sigma_max=80, rho=7, skip_ratio=0.6,
     S_churn=0, S_min=0, S_max=float('inf'), S_noise=1, use_skip=False, use_full_channels=True,
 ):
     # Adjust noise levels based on what's supported by the network.
@@ -85,7 +84,7 @@ def edm_sampler(
     for i, (t_cur, t_next) in enumerate(zip(t_steps[:-1], t_steps[1:])): # 0, ..., N-1
         x_cur = x_next
 
-        if use_skip and i > num_steps // 5 * 3:
+        if use_skip and i > int(num_steps * skip_ratio):
             return_stage_idx = net.model.num_bricks - 1 # skip the last brick for fast sampling
 
         # Increase noise temporarily.
@@ -147,7 +146,6 @@ def parse_int_list(s):
 
 @click.command()
 @click.option('--network', 'network_pkl',  help='Network pickle filename', metavar='PATH|URL',                      type=str, required=True)
-@click.option('--arch', 'arch',            help='Network architecture', metavar='PATH|URL',                         type=str, required=True)
 @click.option('--outdir',                  help='Where to save the output images', metavar='DIR',                   type=str, required=True)
 @click.option('--seeds',                   help='Random seeds (e.g. 1,2,5-10)', metavar='LIST',                     type=parse_int_list, default='0-63', show_default=True)
 @click.option('--subdirs',                 help='Create subdirectory for every 1000 seeds',                         is_flag=True)
@@ -155,7 +153,6 @@ def parse_int_list(s):
 @click.option('--batch', 'max_batch_size', help='Maximum batch size', metavar='INT',                                type=click.IntRange(min=1), default=64, show_default=True)
 @click.option('--img_resolution', 'img_resolution',      help='image resolution', metavar='INT',                    type=click.IntRange(min=1), default=64, show_default=True)
 @click.option('--img_channels', 'img_channels',      help='image channels', metavar='INT',                          type=click.IntRange(min=1), default=3, show_default=True)
-@click.option('--label_dim', 'label_dim',      help='num of classes', metavar='INT',                                type=click.IntRange(min=0), default=1000, show_default=True)
 
 @click.option('--steps', 'num_steps',      help='Number of sampling steps', metavar='INT',                          type=click.IntRange(min=1), default=18, show_default=True)
 @click.option('--sigma_min',               help='Lowest noise level  [default: varies]', metavar='FLOAT',           type=click.FloatRange(min=0, min_open=True))
@@ -168,13 +165,14 @@ def parse_int_list(s):
 @click.option('--cfg_scale', 'cfg_scale',  help='Cfg scale parameter', metavar='FLOAT',                             type=float, default=1.0, show_default=True)
 @click.option('--skip_bricks', 'skip_bricks',  help='Returning stage index', metavar='INT',                         type=bool, default=False, show_default=True)
 @click.option("--fc", 'use_full_channels', help="use full channels in cfg sampling", metavar='BOOL',                type=bool, default=True, show_default=True)
-@click.option('--height_ratio', 'height_ratio',      help='Number of sampling steps', metavar='INT',                          type=click.FloatRange(min=1.0), default=1.0, show_default=True)
-@click.option('--width_ratio', 'width_ratio',      help='Number of sampling steps', metavar='INT',                          type=click.FloatRange(min=1.0), default=1.0, show_default=True)
+@click.option('--skip_ratio', 'skip_ratio',      help='Start from how many timesteps we skip LEGO bricks', metavar='INT',                          type=click.FloatRange(min=0.0, max=1.0), default=0.6, show_default=True)
+@click.option('--height_ratio', 'height_ratio',      help='Ratio to sample smaller/larger content', metavar='INT',                          type=click.FloatRange(min=1.0), default=1.0, show_default=True)
+@click.option('--width_ratio', 'width_ratio',      help='Ratio to sample smaller/larger content', metavar='INT',                          type=click.FloatRange(min=1.0), default=1.0, show_default=True)
 
 @click.option('--vae', 'use_vae',         help='whether use SD VAE in generation', metavar='STR',                   type=bool, default=False, show_default=True)
 @click.option('--npz', 'compress_npz',         help='whether use SD VAE in generation', metavar='STR',                   type=bool, default=False, show_default=True)
 
-def main(network_pkl, arch, outdir, subdirs, seeds, class_idx, max_batch_size, cfg_scale, use_full_channels, skip_bricks, img_resolution, img_channels, label_dim, height_ratio, width_ratio, use_vae, compress_npz, device=torch.device('cuda')):
+def main(network_pkl, outdir, subdirs, seeds, class_idx, max_batch_size, cfg_scale, use_full_channels, skip_bricks, img_resolution, img_channels, height_ratio, width_ratio, skip_ratio, use_vae, compress_npz, device=torch.device('cuda'), **sampler_kwargs):
     """Generate random images using the techniques described in the paper
     "Elucidating the Design Space of Diffusion-Based Generative Models".
 
@@ -183,12 +181,12 @@ def main(network_pkl, arch, outdir, subdirs, seeds, class_idx, max_batch_size, c
     \b
     # Generate 64 images and save them as out/*.png
     python generate.py --outdir=out --seeds=0-63 --batch=64 \\
-        --network=lego_L_PG_64.pkl
+        --network=LEGO-L-PG-64.pkl
 
     \b
     # Generate 1024 images using 2 GPUs with SD VAE and compress output folder to out.npz
     torchrun --standalone --nproc_per_node=2 generate.py --outdir=out --seeds=0-1023 --batch=64 \\
-        --network=lego_XL_U_256.pkl --compress_npz --vae 
+        --network=LEGO-XL-U-256.pkl --npz=True --vae=True
     """
     dist.init()
     num_batches = ((len(seeds) - 1) // (max_batch_size * dist.get_world_size()) + 1) * dist.get_world_size()
@@ -207,10 +205,8 @@ def main(network_pkl, arch, outdir, subdirs, seeds, class_idx, max_batch_size, c
         dist.print0(f'Looking for the latest network from "{network_pkl}"...')
         network_pkl = find_latest_checkpoint(network_pkl)
     dist.print0(f'Loading network from "{network_pkl}"...')
-    
-    net = dnnlib.util.construct_class_by_name(class_name='training.networks.EDMPrecondLEGO', model_type=arch, img_resolution=img_resolution, img_channels=img_channels, label_dim=label_dim)
-    net_weight = torch.load(network_pkl, map_location='cpu')
-    net.model.load_state_dict(net_weight["ema"])
+    with dnnlib.util.open_url(network_pkl, verbose=(dist.get_rank() == 0)) as f:
+        net = pickle.load(f)['ema']
     net.eval().to(device)
 
     # Other ranks follow.
@@ -237,9 +233,9 @@ def main(network_pkl, arch, outdir, subdirs, seeds, class_idx, max_batch_size, c
 
         # Generate images.
         sampler_kwargs = {key: value for key, value in sampler_kwargs.items() if value is not None}
-        sampler_fn =  edm_sampler
+        sampler_fn =  edm_lego_sampler
         with torch.no_grad():
-            images = sampler_fn(net, latents, class_labels, cfg_scale, randn_like=rnd.randn_like, use_full_channels=use_full_channels, use_skip=skip_bricks, **sampler_kwargs)
+            images = sampler_fn(net, latents, class_labels, cfg_scale, randn_like=rnd.randn_like, use_full_channels=use_full_channels, use_skip=skip_bricks, skip_ratio=skip_ratio, **sampler_kwargs)
             images = vae.decode((images / 0.18215).float()).sample if use_vae else images
 
         # Save images.
