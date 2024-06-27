@@ -1,4 +1,5 @@
 # LEGO-Diffusion
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/learning-stackable-and-skippable-lego-bricks/image-generation-on-celeba-64x64)](https://paperswithcode.com/sota/image-generation-on-celeba-64x64?p=learning-stackable-and-skippable-lego-bricks) [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/learning-stackable-and-skippable-lego-bricks/image-generation-on-imagenet-64x64)](https://paperswithcode.com/sota/image-generation-on-imagenet-64x64?p=learning-stackable-and-skippable-lego-bricks) [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/learning-stackable-and-skippable-lego-bricks/image-generation-on-imagenet-256x256)](https://paperswithcode.com/sota/image-generation-on-imagenet-256x256?p=learning-stackable-and-skippable-lego-bricks) 
  Pytorch implementation of LEGO-Diffusion: Learning stackable and skippable LEGO bricks for efficient, reconfigurable, and variable-resolution diffusion modeling.
 
 ### [Paper](https://openreview.net/pdf?id=qmXedvwrT1) | [ArXiv](https://arxiv.org/abs/2310.06389) | [Project Page](https://huangjiezheng.com/LEGODiffusion/)
