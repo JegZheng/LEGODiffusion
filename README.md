@@ -41,7 +41,7 @@ torchrun \
 --standalone \
 --nproc_per_node 8 \
 train.py --data=path/to/celeba/celaba-64x64.zip --outdir=results/lego_diffusion/lego_S_celeba/ \
---arch=lego_S_PG_64 --cond=True --lr=0.0001 --duration=200 
+--arch=lego_S_PG_64 --lr=0.0001 --duration=200 
 ```
 
 This code contains an auto-resuming function. By setting the `--resume` option point to the experiment folder, it will search for the latest checkpoint to resume; otherwise, you may specify which checkpoint to resume:
@@ -50,12 +50,12 @@ This code contains an auto-resuming function. By setting the `--resume` option p
 # auto resume
 torchrun --standalone --nproc_per_node 8 \
 train.py --data=path/to/celeba/celaba-64x64.zip --outdir=results/lego_diffusion/lego_S_celeba/ \
---arch=lego_S_PG_64 --cond=True --lr=0.0001 --duration=200 --resume=results/lego_diffusion/lego_S_celeba/
+--arch=lego_S_PG_64 --lr=0.0001 --duration=200 --resume=results/lego_diffusion/lego_S_celeba/
 
 # specify the checkpoint to resume
 torchrun --standalone --nproc_per_node 8 \
 train.py --data=path/to/celeba/celaba-64x64.zip --outdir=results/lego_diffusion/lego_S_celeba/ \
---arch=lego_S_PG_64 --cond=True --lr=0.0001 --duration=200 --resume=results/lego_diffusion/lego_S_celeba/xxx-exp/training-state-xxx.pt
+--arch=lego_S_PG_64 --lr=0.0001 --duration=200 --resume=results/lego_diffusion/lego_S_celeba/xxx-exp/training-state-xxx.pt
 ```
 
 
