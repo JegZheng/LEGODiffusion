@@ -65,7 +65,7 @@ You may sample images with the trained LEGO models. For example, to generate a s
 ```
 # If directly generate in pixel space
 torchrun --standalone --nproc_per_node=8 \
-generate.py --seeds=0-63 --outdir=tmp --network=LEGO-L-PG-64.pkl --cfg_scale=4 --steps=256 --vae=True
+generate.py --seeds=0-63 --outdir=tmp --network=LEGO-L-PG-64.pkl --cfg_scale=4 --steps=256
 
 # If using SD decoder
 torchrun --standalone --nproc_per_node=8 \

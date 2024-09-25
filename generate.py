@@ -162,7 +162,7 @@ def parse_int_list(s):
 @click.option('--S_min', 'S_min',          help='Stoch. min noise level', metavar='FLOAT',                          type=click.FloatRange(min=0), default=0, show_default=True)
 @click.option('--S_max', 'S_max',          help='Stoch. max noise level', metavar='FLOAT',                          type=click.FloatRange(min=0), default='inf', show_default=True)
 @click.option('--S_noise', 'S_noise',      help='Stoch. noise inflation', metavar='FLOAT',                          type=float, default=1, show_default=True)
-@click.option('--cfg_scale', 'cfg_scale',  help='Cfg scale parameter', metavar='FLOAT',                             type=float, default=1.0, show_default=True)
+@click.option('--cfg_scale', 'cfg_scale',  help='Cfg scale parameter', metavar='FLOAT',                             type=float, default=None, show_default=True)
 @click.option('--skip_bricks', 'skip_bricks',  help='Returning stage index', metavar='INT',                         type=bool, default=False, show_default=True)
 @click.option("--fc", 'use_full_channels', help="use full channels in cfg sampling", metavar='BOOL',                type=bool, default=True, show_default=True)
 @click.option('--skip_ratio', 'skip_ratio',      help='Start from how many timesteps we skip LEGO bricks', metavar='INT',                          type=click.FloatRange(min=0.0, max=1.0), default=0.6, show_default=True)

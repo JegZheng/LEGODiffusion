@@ -450,7 +450,7 @@ class LEGO(nn.Module):
             if self.train_intermediate_stages:
                 D_x.append(F_x) # [B x C x H x W]
             
-        if self.train_intermediate_stages:
+        if self.train_intermediate_stages and self.training:
             return D_x
         return F_x
 
