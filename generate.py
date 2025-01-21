@@ -48,10 +48,10 @@ def compress_to_npz(folder_path, npz_path):
 
     samples = []
 
-    for file_name in tqdm(file_names, desc="Compressing images"):
+    for file_name in tqdm.tqdm(file_names, desc="Compressing images"):
         file_path = os.path.join(folder_path, file_name)
         
-        image = Image.open(file_path)
+        image = PIL.Image.open(file_path)
         image_array = np.asarray(image).astype(np.uint8)
         
         samples.append(image_array)
@@ -253,7 +253,7 @@ def main(network_pkl, outdir, subdirs, seeds, class_idx, max_batch_size, cfg_sca
     torch.distributed.barrier()
     if dist.get_rank() == 0:
         if compress_npz:
-            compress_to_npz(outdir, outdir + ".npz")
+            compress_to_npz(outdir, "img.npz")
     torch.distributed.barrier()
     dist.print0('Done.')
 
